@@ -97,9 +97,10 @@ namespace ApiDotNetCore
         {
             try
             {
-                TEntity._id = id;
                 var filter = Builders<T>.Filter.Eq(x => x._id, id);
-                var result = await _db.GetCollection<T>(typeName).ReplaceOneAsync(filter, TEntity);
+                var result = await _db.GetCollection<T>(typeName).ReplaceOneAsync(filter
+                                                                                    , TEntity
+                                                                                    , new UpdateOptions { IsUpsert = true });
 
                 return await Task.FromResult(result.ModifiedCount > 0);
             }
